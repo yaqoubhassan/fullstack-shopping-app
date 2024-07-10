@@ -45,20 +45,14 @@
     <table class="w-full text-left border-collapse">
       <thead>
         <tr>
-          <th class="border-b-2 py-2 px-4">#</th>
           <th class="border-b-2 py-2 px-4">Product Name</th>
           <th class="border-b-2 py-2 px-4">Quantity</th>
           <th class="border-b-2 py-2 px-4">Price</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(item, index) in invoice.items"
-          :key="item.id"
-          class="hover:bg-gray-100"
-        >
-          <td class="border-b py-2 px-4">{{ index + 1 }}.</td>
-          <td class="border-b py-2 px-4">{{ item.product.name }}</td>
+        <tr v-for="item in invoice.items" :key="item.id" class="hover:bg-gray-100">
+          <td class="border-b py-2 px-4">{{ getProductName(item.productId) }}</td>
           <td class="border-b py-2 px-4">{{ item.quantity }}</td>
           <td class="border-b py-2 px-4">{{ item.price }}</td>
         </tr>
@@ -69,6 +63,7 @@
 
 <script>
 import axios from "axios";
+import { useProductStore } from "@/stores/productStore";
 
 export default {
   data() {
@@ -76,32 +71,39 @@ export default {
       invoice: {},
     };
   },
+  computed: {
+    products() {
+      const productStore = useProductStore();
+      return productStore.products;
+    },
+    loading() {
+      const productStore = useProductStore();
+      return productStore.loading;
+    },
+    error() {
+      const productStore = useProductStore();
+      return productStore.error;
+    },
+  },
   created() {
     axios.get(`/api/invoices/${this.$route.params.id}`).then((response) => {
       this.invoice = response.data;
     });
+
+    const productStore = useProductStore();
+    if (!productStore.products.length) {
+      productStore.fetchProducts();
+    }
   },
   methods: {
     goBack() {
       this.$router.push({ path: "/", query: { page: "invoices" } });
     },
+    getProductName(productId) {
+      const productStore = useProductStore();
+      const product = productStore.getProductById(productId);
+      return product ? product.name : "Unknown Product";
+    },
   },
 };
 </script>
-
-<style scoped>
-button {
-  transition: color 0.2s ease;
-}
-h1,
-h2,
-h3 {
-  transition: color 0.2s ease;
-}
-div {
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-table {
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-</style>
