@@ -44,4 +44,10 @@ Copy the url generated from `php artisan serve` command and paste it in a browse
 
 ## Application Screenshots
 
-![Product Lists Screen](public/screenshots/products-list.png)
+![Products List Screen](public/screenshots/products-list.png)
+
+![Product Details Screen](public/screenshots/product-details.png)
+
+![Invoices List Screen](public/screenshots/invoices-list.png)
+
+![Invoice Details Screen](public/screenshots/invoice-details.png)
