@@ -41,3 +41,7 @@ A fullstack application built with Laravel (on the backend) and Vue.js (on the f
     ```
 Copy the url generated from `php artisan serve` command and paste it in a browser.
 
+
+## Application Screenshots
+
+![Product Lists Screen](public/screenshots/products-list.png)
