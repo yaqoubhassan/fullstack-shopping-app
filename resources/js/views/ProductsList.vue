@@ -1,33 +1,45 @@
 <template>
-  <div class="masonry">
-    <h1>My Guy</h1>
-    <!-- <div v-for="product in products" :key="product.id" class="masonry-item">
-      <img :src="product.image_url" @click="viewProduct(product.id)">
-      <p>{{ product.name }}</p>
-    </div> -->
+  <div
+    v-for="product in products"
+    :key="product.id"
+    class="bg-white rounded-lg overflow-hidden p-2"
+  >
+    <img
+      :src="product.image_url"
+      @click="viewProduct(product.id)"
+      class="w-full h-auto rounded-md cursor-pointer"
+    />
+    <!-- <p class="mt-2 text-center text-sm font-medium">{{ product.name }}</p> -->
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
+  // props: {
+
+  // },
   data() {
     return {
-      products: []
-    }
+      products: [],
+      activePage: "products",
+    };
   },
-//   created() {
-//     axios.get('/api/products').then(response => {
-//       this.products = response.data;
-//     });
-//   },
-//   methods: {
-//     viewProduct(id) {
-//       this.$router.push(`/products/${id}`);
-//     }
-//   }
-}
+  created() {
+    axios.get("/api/products").then((response) => {
+      this.products = response.data;
+    });
+  },
+  methods: {
+    viewProduct(id) {
+      this.$router.push(`/products/${id}`);
+    },
+    navigateTo(page) {
+      this.activePage = page;
+    },
+  },
+};
 </script>
 
 <style>
